@@ -1,30 +1,22 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <vector>
 using namespace std;
 
 
-void PrintSolution(){
-    cout << "No real roots" << endl;
-}
-
-void PrintSolution(double root){
-    cout << root << endl;
-}
-
-void PrintSolution(double root1, double root2){
-    cout << root1 << " " << root2 <<  endl;
+void PrintSolution(ofstream &file, vector<double> solution){
+    if (solution.capacity() == 0)
+        file << "No real roots" << endl;
+    else if (solution.capacity() == 1)
+        file << solution[0] << endl;
+    else
+        file << solution[0] << " " << solution[0] <<  endl;
 }
 
 double Discriminant(double a, double b, double c){
     return b * b - 4 * a * c;
 }
-
-//double CoefInput(double * ap, double * bp, double * cp){
-//    cout << "Enter coefficients" << endl;
-//    cin >> *ap >> *bp >> *cp;
-//    cout << "Your equation:\nx^2 * " << *ap << " + x * " << *bp << " + " << *cp << " = 0" << endl;
-//}
 
 bool IsDiscriminantNegative(double D){
     if (D < 0)
@@ -38,51 +30,50 @@ double FindRoot(double a, double b, double sqrtD){
 }
 
 bool IsQuadratic(double a){
-    if (a != 0)
-        return true;
-    return false;
+    return a != 0;
 }
 
 
-void SolveLinear(double b, double c){
-    if (b == 0)
-        PrintSolution();
-    else
-        PrintSolution(-c/b);
+vector<double> SolveLinear(double b, double c){
+    vector<double> solution;
+    if (!(b == 0))
+        solution.push_back(-c/b);
+    return solution;
 }
 
 
-void SolveQuadratic(double a, double b, double c){
+vector<double> SolveQuadratic(double a, double b, double c){
+    vector<double> solution;
     if (!IsQuadratic(a)){
-        SolveLinear(b,c);
-        return;
+        return SolveLinear(b,c);
     }
     double D = Discriminant(a, b, c);
     if (IsDiscriminantNegative(D))
-        PrintSolution();
+        return solution;
     else {
         D = sqrt(D);
         double root1 = FindRoot(a, b, D);
-        if (D == 0)
-            PrintSolution(root1);
-        else {
+        solution.push_back(root1);
+        if (D != 0){
             double root2 = FindRoot(a, b, -D);
-            PrintSolution(root1, root2);
+            solution.push_back(root2);
         }
     }
-    return;
+    return solution;
 }
 
 int main(){
     double a, b, c;
+    vector<double> solution;
     ifstream infile("input.txt");
     ofstream ofile("output.txt");
 
-    streambuf *coutbuf = cout.rdbuf();
-    cout.rdbuf(ofile.rdbuf());
-
     while (infile >> a >> b >> c){
-        SolveQuadratic(a,b,c);
+        solution = SolveQuadratic(a,b,c);
+        PrintSolution(ofile, solution);
+        solution.clear();
     }
+
+
     return 0;
 }
