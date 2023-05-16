@@ -20,11 +20,17 @@ Task::Task(double _a, double _b, double _c)
 }
 
 
+
+
 Student::Student(string _name, double _correctAnswerChance)
 {
     name = _name;
     correctAnswerChance = _correctAnswerChance;
 }
+
+GoodStudent::GoodStudent(string _name) : Student::Student(_name, 1.0) {};
+BadStudent::BadStudent(string _name) : Student::Student(_name, 0.0) {};
+NormalStudent::NormalStudent(string _name, double _correctAnswerChance) : Student::Student(_name, _correctAnswerChance) {};
 
 double Student::GetAnswerChance()
 {

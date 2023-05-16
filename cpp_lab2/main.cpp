@@ -19,14 +19,14 @@ int main()
 
     vector<Student> students;
     // 2 good students
-    students.push_back(Student("Artem", 1.0));
-    students.push_back(Student("Nastya", 1.0));
+    students.push_back(GoodStudent("Artem"));
+    students.push_back(GoodStudent("Nastya"));
     // 2 random students
     for (int i = 0; i < 10; i++)
-        students.push_back(Student(GenerateRandomName(6), double((rand() % 100 / 100.0))));
+        students.push_back(NormalStudent(GenerateRandomName(6), double((rand() % 100 / 100.0))));
     // 2 bad students
-    students.push_back(Student("Kirill", 0.0));
-    students.push_back(Student("Egor", 0.0));
+    students.push_back(BadStudent("Kirill"));
+    students.push_back(BadStudent("Egor"));
 
     Teacher teacher = Teacher();
 

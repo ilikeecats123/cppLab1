@@ -37,6 +37,21 @@ class Student{
         string GetName();
 };
 
+class GoodStudent : public Student{
+    public:
+        GoodStudent(string _name);
+};
+
+class BadStudent : public Student{
+    public:
+        BadStudent(string _name);
+};
+
+
+class NormalStudent : public Student{
+    public:
+        NormalStudent(string _name, double _correctAnswerChance);
+};
 
 
 class Teacher{
